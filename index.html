@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SalesPulse | Analytics Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">S</span> SalesPulse</a>
+      <p class="side-label">WORKSPACE</p>
+      <button class="nav-link active" data-section="overview"><span>▦</span> Overview</button>
+      <button class="nav-link" data-section="sales"><span>▤</span> Sales records</button>
+
+      <div class="sidebar-note">
+        <div class="note-icon">✦</div>
+        <strong>Make data useful.</strong>
+        <p>Track performance, find trends, and make smarter decisions.</p>
+      </div>
+      <div class="sidebar-footer"><span class="status-dot"></span> Demo dataset loaded</div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="menu-button" id="menuButton" aria-label="Toggle navigation">☰</button>
+        <div><span class="crumb">Analytics / </span><strong id="crumbTitle">Overview</strong></div>
+        <div class="topbar-right">
+          <span class="live-dot"></span><span>Demo data</span>
+          <span class="avatar">SP</span>
+        </div>
+      </header>
+
+      <section class="page-content" id="overviewSection">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">SALES PERFORMANCE</p>
+            <h1>Sales overview<span>.</span></h1>
+            <p class="subheading">Understand your revenue and track what's moving your business forward.</p>
+          </div>
+          <div class="heading-actions">
+            <label class="date-select">Period
+              <select id="periodFilter">
+                <option value="all">All months</option>
+                <option value="Q1">Q1 · Jan–Mar</option>
+                <option value="Q2">Q2 · Apr–Jun</option>
+                <option value="Q3">Q3 · Jul–Sep</option>
+                <option value="Q4">Q4 · Oct–Dec</option>
+              </select>
+            </label>
+            <button class="button primary" id="exportBtn">↓ Export CSV</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <article class="kpi-card">
+            <div class="kpi-top"><span>Total revenue</span><span class="kpi-icon purple">₹</span></div>
+            <h2 id="revenueKpi">₹0</h2>
+            <div class="kpi-foot"><span class="trend positive">↗ 12.8%</span><span>vs previous period</span></div>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-top"><span>Total orders</span><span class="kpi-icon blue">▤</span></div>
+            <h2 id="ordersKpi">0</h2>
+            <div class="kpi-foot"><span class="trend positive">↗ 8.4%</span><span>vs previous period</span></div>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-top"><span>Units sold</span><span class="kpi-icon orange">◇</span></div>
+            <h2 id="unitsKpi">0</h2>
+            <div class="kpi-foot"><span class="trend positive">↗ 6.2%</span><span>vs previous period</span></div>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-top"><span>Average order value</span><span class="kpi-icon green">₹</span></div>
+            <h2 id="aovKpi">₹0</h2>
+            <div class="kpi-foot"><span class="trend neutral">— Stable</span><span>per order</span></div>
+          </article>
+        </div>
+
+        <div class="charts-grid">
+          <article class="panel revenue-panel">
+            <div class="panel-heading">
+              <div><h2>Revenue over time</h2><p>Monthly revenue performance</p></div>
+              <span class="panel-tag">2026</span>
+            </div>
+            <div class="chart-legend"><span><i class="legend-dot revenue-dot"></i>Revenue</span></div>
+            <div class="chart-wrap"><canvas id="revenueChart" aria-label="Monthly revenue chart"></canvas></div>
+          </article>
+
+          <article class="panel category-panel">
+            <div class="panel-heading">
+              <div><h2>Sales by category</h2><p>Revenue distribution</p></div>
+              <button class="icon-button" id="resetFilters" title="Reset filters">↻</button>
+            </div>
+            <div class="donut-wrap">
+              <canvas id="categoryChart" aria-label="Sales by category chart"></canvas>
+              <div class="donut-center"><strong id="categoryTotal">₹0</strong><span>Total sales</span></div>
+            </div>
+            <div class="category-legend" id="categoryLegend"></div>
+          </article>
+        </div>
+
+        <article class="panel records-panel" id="salesPanel">
+          <div class="panel-heading records-heading">
+            <div><h2>Recent sales</h2><p>Review individual transactions and their performance.</p></div>
+            <button class="button secondary" id="viewAllBtn">View all records →</button>
+          </div>
+          <div class="table-tools">
+            <input type="search" id="searchInput" placeholder="Search order, product, region..." aria-label="Search sales">
+            <select id="regionFilter" aria-label="Filter region"><option value="all">All regions</option></select>
+            <select id="categoryFilter" aria-label="Filter category"><option value="all">All categories</option></select>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>ORDER ID</th><th>PRODUCT</th><th>CATEGORY</th><th>REGION</th><th>DATE</th><th>UNITS</th><th>REVENUE</th></tr></thead>
+              <tbody id="salesTableBody"></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="resultsCount">Showing 0 records</span><span>Sample data · INR</span></div>
+        </article>
+        <footer class="footer-note">SalesPulse Analytics <span>•</span> Portfolio demo project built with HTML, CSS and JavaScript</footer>
+      </section>
+
+      <section class="page-content records-page" id="recordsSection" hidden>
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">TRANSACTION DETAILS</p>
+            <h1>Sales records<span>.</span></h1>
+            <p class="subheading">Search and filter the sample transaction dataset.</p>
+          </div>
+          <button class="button primary" id="exportAllBtn">↓ Export filtered CSV</button>
+        </div>
+        <div class="panel records-panel">
+          <div class="table-tools">
+            <input type="search" id="searchInputAll" placeholder="Search order, product, region..." aria-label="Search all sales">
+            <select id="regionFilterAll"><option value="all">All regions</option></select>
+            <select id="categoryFilterAll"><option value="all">All categories</option></select>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>ORDER ID</th><th>PRODUCT</th><th>CATEGORY</th><th>REGION</th><th>DATE</th><th>UNITS</th><th>REVENUE</th></tr></thead>
+              <tbody id="allSalesTableBody"></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="allResultsCount">Showing 0 records</span><span>Sample data · INR</span></div>
+        </div>
+        <footer class="footer-note">SalesPulse Analytics <span>•</span> Portfolio demo project</footer>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
